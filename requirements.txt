@@ -1,0 +1,43 @@
+fastapi==0.115.0
+starlette==0.38.6
+sse-starlette==2.1.3
+uvicorn[standard]==0.31.1
+websockets>=13.0.0,<14.0.0
+uiautomation==2.0.18; sys_platform == 'win32'
+pywinauto==0.6.8; sys_platform == 'win32'
+# pywin32: Keep ASCII here (Windows pip may read as system encoding)
+pywin32==310; sys_platform == 'win32'
+pyperclip==1.8.2; sys_platform == 'win32'
+Pillow==10.4.0
+mss==9.0.1; sys_platform == 'win32'
+httpx==0.27.2
+apscheduler==3.10.4
+# pywebview: GUI desktop shell
+pywebview==5.3.2; sys_platform == 'win32'
+# Windows clr: only needed on Windows desktop app shell
+pythonnet==3.0.5; sys_platform == 'win32'
+clr_loader==0.2.10; sys_platform == 'win32'
+numpy>=1.26.0
+pystray>=0.19.0; sys_platform == 'win32'
+python-dotenv==1.1.0
+cryptography>=42.0.0
+PyJWT>=2.8.0
+python-multipart>=0.0.9
+keyboard==0.13.5; sys_platform == 'win32'
+requests==2.32.3
+openpyxl==3.1.5
+xlrd==2.0.1
+python-docx==1.1.2
+pdfplumber==0.11.4
+python-pptx==1.0.2
+psutil==5.9.8
+sqlalchemy==2.0.50
+greenlet==3.5.1
+aiohttp==3.13.5
+hpack==4.1.0
+supabase==2.30.0
+qrcode==7.4.2
+pyttsx3==2.99; sys_platform == 'win32'
+pypiwin32==223; sys_platform == 'win32'
+pypdf==6.14.2
+rapidocr-onnxruntime==1.4.4

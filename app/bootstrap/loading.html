@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            background: linear-gradient(to bottom right, #FFFFFF, #F9FAFB, #FFFFFF);
+            overflow: hidden;
+        }
+        .splash-container {
+            position: fixed;
+            top: 32px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: calc(100% - 32px);
+            z-index: 9999;
+            background: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 24px; user-select: none;
+            -webkit-user-select: none;
+            box-sizing: border-box;
+        }
+        .logo-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            overflow: hidden;
+            animation: ss-pulse 2s infinite ease-in-out;
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+        .logo-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 32px;
+            border: 2px solid rgba(7, 193, 96, 0.3);
+            animation: ss-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #07c160;
+            letter-spacing: -0.025em;
+            margin: 0;
+            line-height: 32px;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        .app-version {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #6B7280;
+            opacity: 0.45;
+            margin: 0;
+            line-height: 20px;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        .progress-bar-bg {
+            width: 192px;
+            height: 4px;
+            border-radius: 9999px;
+            overflow: hidden;
+            background: rgba(156, 163, 175, 0.15);
+            margin-top: 8px;
+            position: relative;
+        }
+        .progress-bar-fg {
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #07c160, #26d075);
+            position: absolute;
+            width: 30%;
+            animation: xm-splash-loading-bar 1.8s ease-in-out infinite;
+        }
+        .status-text {
+            font-size: 14px;
+            color: #6B7280;
+            opacity: 0.6;
+            font-weight: 500;
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            animation: ss-pulse 2s infinite ease-in-out;
+        }
+        
+        @keyframes ss-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes ss-ping {
+            75%, 100% { transform: scale(1.4); opacity: 0; }
+        }
+        @keyframes xm-splash-loading-bar {
+            0% {
+                width: 0%;
+                margin-left: 0;
+            }
+            50% {
+                width: 60%;
+                margin-left: 20%;
+            }
+            100% {
+                width: 0%;
+                margin-left: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-container">
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <div class="logo-box">
+                <img src="{logo_b64}" draggable="false" />
+            </div>
+        </div>
+        <div class="title-block">
+            <div class="title">xm-bot4</div>
+            {_splash_ver_html}
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fg"></div>
+        </div>
+        <p class="status-text" id="status-text">系统加载中...</p>
+    </div>
+    <script>
+       const texts = ['正在唤醒 xm-bot4 AI 引擎...', '正在挂载核心大脑...', '正在接入通信渠道...', '自动化接管启动中...'];
+       let i = 0;
+       setInterval(() => {
+           i = (i + 1) % texts.length;
+           document.getElementById('status-text').innerText = texts[i];
+       }, 1200);
+
+       // 🖱️ [高可靠拖拽] 全局 pointerdown 拖拽补偿，确保秒开且百分之百能拖动
+       document.addEventListener('pointerdown', (e) => {
+           if (e.buttons !== 1) return;
+           // 排除控制按钮区域和可交互元素
+           if (e.target.closest('.ss-shell-controls, button, input, textarea, a, select')) return;
+           
+           const api = window.pywebview && window.pywebview.api;
+           if (api && api.start_drag) {
+               api.start_drag();
+           } else {
+               // 微轮询兜底，以防点击时 pywebview bridge 仍在注入初始化
+               let attempts = 0;
+               const timer = setInterval(() => {
+                   const a = window.pywebview && window.pywebview.api;
+                   if (a && a.start_drag) {
+                       a.start_drag();
+                       clearInterval(timer);
+                   } else if (++attempts > 20) {
+                       clearInterval(timer);
+                   }
+               }, 50);
+           }
+       });
+    </script>
+</body>
+</html>

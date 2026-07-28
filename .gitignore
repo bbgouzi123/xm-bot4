@@ -1,0 +1,22 @@
+# Excluded directories specified for open-sourcing
+__pycache__/
+_internal/
+.venv/
+assets/
+build_scripts/
+data/
+dist/
+docs/
+update/
+
+# Temporary and local data files
+output/
+scratch/
+*.db
+*.pyc
+*.pyo
+*.pyd
+*.log
+.DS_Store
+.idea/
+.vscode/
